@@ -15,12 +15,14 @@ options=('!strip')
 _srcname=ps4-linux
 source=(
   "$_srcname::git+https://github.com/ps4boot/ps4-linux"
+  thunk_64_patch.diff
   config         # the main kernel config file
   60-linux.hook
   90-linux.hook
   linux.preset
 )
 sha256sums=('SKIP'
+            '350e6aa2663165b287022267601607431fb577d15a77826b50b4b47f860586b7'
             '6aa890896afaa6a01fb00732989b7e34ebf9bb8daca32581a1f07fda7e4c9d68'
             'ae2e95db94ef7176207c690224169594d49445e04249d2499e9d2fbc117a0b21'
             '0922dace35ea3925e37f75ce26fd3a899b9701445c30a747b1ddc49aa22edce9'
@@ -32,6 +34,8 @@ export KBUILD_BUILD_TIMESTAMP="$(date -Ru${SOURCE_DATE_EPOCH:+d @$SOURCE_DATE_EP
 
 prepare() {
   cd $_srcname
+
+  git apply ../thunk_64_patch.diff
 
   echo "Setting version..."
   scripts/setlocalversion --save-scmversion
